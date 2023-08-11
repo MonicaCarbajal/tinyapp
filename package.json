@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/MonicaCarbajal/tinyapp/issues"
   },
-  "homepage": "https://github.com/MonicaCarbajal/tinyapp#readme"
+  "homepage": "https://github.com/MonicaCarbajal/tinyapp#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
 }
