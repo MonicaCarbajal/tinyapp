@@ -6,8 +6,7 @@ app.set("view engine", "ejs");
 
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com",
-  // "08j7cK": "http://http://www.nightvalepresents.com/"
+  "9sm5xK": "http://www.google.com"
 };
 
 app.get("/urls", (req, res) => {
@@ -16,7 +15,7 @@ app.get("/urls", (req, res) => {
 });
 
 app.get("/urls/:id", (req, res) => {
-  const templateVars = { id: req.params.id, longURL: "http://http://www.nightvalepresents.com/" };
+  const templateVars = { id: req.params.id, longURL: "http://www.lighthouselabs.ca" };
   res.render("urls_show", templateVars);
 }); 
 
