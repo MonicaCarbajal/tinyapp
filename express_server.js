@@ -20,10 +20,11 @@ app.get("/urls/new", (req, res) => {
   res.render("urls_new");
 });
 
+
 app.get("/urls/:id", (req, res) => {
-  const templateVars = { id: req.params.id, longURL: "http://www.lighthouselabs.ca" };
+  const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id] };
   res.render("urls_show", templateVars);
-}); 
+});
 
 app.get("/", (req, res) => {
   res.send("Hello!");
@@ -38,11 +39,22 @@ app.get("/urls.json", (req, res) => {
 });
 
 app.post("/urls", (req, res) => {
-  console.log(req.body); // Log the POST request body to the console
-  res.send("Ok"); // Respond with 'Ok' (we will replace this)
+  const id = generateRandomString();
+  const longURL = req.body.longURL;
+  urlDatabase[id] = longURL;
+  res.redirect(`/urls/${id}`); // Redirect to the newly created URL
 });
 
-function generateRandomString() {}
+function generateRandomString() {
+  const length = 6;
+  const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let randomString = '';
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    randomString += characters[randomIndex];
+  }
+  return randomString;
+}
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
