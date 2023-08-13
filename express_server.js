@@ -65,6 +65,18 @@ app.post("/urls/:id/delete", (req, res) => {
   }
 });
 
+app.post("/urls/:id", (req, res) => {
+  const idToUpdate = req.params.id;
+  const newLongURL = req.body.longURL;
+
+  if (urlDatabase[idToUpdate]) {
+    urlDatabase[idToUpdate] = newLongURL;
+    res.redirect("/urls");
+  } else {
+    res.status(404).send("Short URL not found");
+  }
+});
+
 function generateRandomString() {
   const length = 6;
   const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';

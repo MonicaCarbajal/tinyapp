@@ -24,7 +24,18 @@
         </p>
       </div>
       <div class="card-footer text-muted"></div>
+      
     </div>
+
+    <div class="card text-center" style="text-align: center;">
+      <form action='/urls/<%= id %>' method="post">
+        <h3>Edit</h3>
+        <label for="longURL">New URL:</label>
+        <input type="text" name="longURL" id="longURL" value="<%= longURL %>">
+        <button type="submit" class="btn btn-outline-danger">Submit</button>
+      </form>
+    </div>
+    
 
     <!-- Bootstrap JS -->
     <script
