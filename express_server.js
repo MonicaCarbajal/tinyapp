@@ -54,6 +54,17 @@ app.post("/urls", (req, res) => {
   res.redirect(`/urls/${id}`); // Redirect to the newly created URL
 });
 
+app.post("/urls/:id/delete", (req, res) => {
+  const idToDelete = req.params.id;
+
+  if (urlDatabase[idToDelete]) {
+    delete urlDatabase[idToDelete];
+    res.redirect("/urls");
+  } else {
+    res.status(404).send("Short URL not found");
+  }
+});
+
 function generateRandomString() {
   const length = 6;
   const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
