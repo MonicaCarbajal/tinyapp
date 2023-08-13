@@ -77,6 +77,20 @@ app.post("/urls/:id", (req, res) => {
   }
 });
 
+app.post("/login", (req, res) => {
+  const { username } = req.body;
+  
+  if (username) {
+    // Set the username as a cookie
+    res.cookie("username", username);
+    
+    // Redirect back to the /urls page
+    res.redirect("/urls");
+  } else {
+    res.status(400).send("Invalid username");
+  }
+});
+
 function generateRandomString() {
   const length = 6;
   const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
