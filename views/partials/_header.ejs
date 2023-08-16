@@ -12,15 +12,17 @@
     >
       <span class="navbar-toggler-icon"></span>
     </button>
+    
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
         <a class="nav-item nav-link" href="/urls">My URLs</a>
         <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
       </div>
     </div>
-    <% if (username) { %>
+
+    <% if (user) { %>
       <h4 class="navbar-text">
-        <span class="navbar-text ml-3">Welcome, <%= username %></span>
+        <span class="navbar-text ml-3">Welcome, <%= user.email %></span>
       </h4>
       <form action="/logout" method="POST" class="ml-3">
         <button type="submit" class="btn btn-danger">Log Out</button>
@@ -31,6 +33,7 @@
         <button type="submit" class="btn btn-outline-light">Login</button>
       </form>
     <% } %>
-  </nav>
+
+    </nav>
 </header>
 

@@ -10,18 +10,43 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com"
 };
 
+const users = {
+  userRandomID: {
+    id: "userRandomID",
+    email: "user@example.com",
+    password: "purple-monkey-dinosaur",
+  },
+  user2RandomID: {
+    id: "user2RandomID",
+    email: "user2@example.com",
+    password: "dishwasher-funk",
+  },
+};
+
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use((req, res, next) => {
-  res.locals.username = req.cookies["username"];
+  res.locals.user = users[req.cookies.user_id];
   next();
 });
 
 app.get("/urls/new", (req, res) => {
-  res.render("urls_new");
+  const user = users[req.cookies.user_id];
+  const templateVars = {
+    user: user
+  };
+  res.render("urls_new", templateVars);
 });
 
+app.get("/urls", (req, res) => {
+  const user = users[req.cookies.user_id];
+  const templateVars = {
+    user: user,
+    urls: urlDatabase 
+  };
+  res.render("urls_index", templateVars);
+});
 
 app.get("/urls/:id", (req, res) => {
   const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id] };
@@ -49,27 +74,42 @@ app.get("/urls.json", (req, res) => {
   res.json(urlDatabase);
 });
 
-app.get("/urls", (req, res) => {
-  const templateVars = {
-    username: req.cookies["username"],
-    urls: urlDatabase
-  };
-  res.render("urls_index", templateVars);
-});
 
 app.get("/register", (req, res) => {
-  res.render("register");
+  const templateVars = {
+    user: null, // or set to a default value
+  };
+  res.render("register", templateVars);
 });
 
 app.post("/register", (req, res) => {
-  // Process the registration form data here
-  // You can access the submitted email and password using req.body.email and req.body.password
-  // Perform any necessary validation and registration logic
-  // For now, you can just send a response or redirect as needed
-  
-  // Example response:
-  res.send("Registration successful!");
+  const email = req.body.email;
+  const password = req.body.password;
+
+  if (!email || !password) {
+    res.status(400).send("Email and password are required.");
+    return;
+  }
+
+  // Check if the email is already registered
+  for (const userId in users) {
+    if (users[userId].email === email) {
+      res.status(400).send("Email is already registered.");
+      return;
+    }
+  }
+
+  const userId = generateRandomString();
+  users[userId] = {
+    id: userId,
+    email: email,
+    password: password
+  };
+
+  res.cookie("user_id", userId);
+  res.redirect("/urls");
 });
+
 
 app.post("/urls", (req, res) => {
   const id = generateRandomString();
@@ -102,26 +142,37 @@ app.post("/urls/:id", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  const { username } = req.body;
-  
-  if (username) {
-    // Set the username as a cookie
-    res.cookie("username", username);
-    
+  const { email, password } = req.body;
+
+  // Check if the user exists and the password matches
+  const user = getUserByEmail(email);
+  if (user && user.password === password) {
+    // Set the user_id as a cookie
+    res.cookie("user_id", user.id);
+
     // Redirect back to the /urls page
     res.redirect("/urls");
   } else {
-    res.status(400).send("Invalid username");
+    res.status(400).send("Invalid email or password");
   }
 });
 
 app.post("/logout", (req, res) => {
-  // Clear the username cookie
-  res.clearCookie("username");
+  // Clear the user_id cookie
+  res.clearCookie("user_id");
 
   // Redirect back to the /urls page
   res.redirect("/urls");
 });
+
+function getUserByEmail(email) {
+  for (const userId in users) {
+    if (users[userId].email === email) {
+      return users[userId];
+    }
+  }
+  return null;
+}
 
 
 function generateRandomString() {
