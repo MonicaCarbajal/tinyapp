@@ -57,6 +57,20 @@ app.get("/urls", (req, res) => {
   res.render("urls_index", templateVars);
 });
 
+app.get("/register", (req, res) => {
+  res.render("register");
+});
+
+app.post("/register", (req, res) => {
+  // Process the registration form data here
+  // You can access the submitted email and password using req.body.email and req.body.password
+  // Perform any necessary validation and registration logic
+  // For now, you can just send a response or redirect as needed
+  
+  // Example response:
+  res.send("Registration successful!");
+});
+
 app.post("/urls", (req, res) => {
   const id = generateRandomString();
   const longURL = req.body.longURL;
