@@ -87,16 +87,21 @@ app.post("/register", (req, res) => {
   const password = req.body.password;
 
   if (!email || !password) {
-    res.status(400).send("Email and password are required.");
+    res.status(400).send("Email and password are required. Try again!");
     return;
   }
 
   // Check if the email is already registered
-  for (const userId in users) {
-    if (users[userId].email === email) {
-      res.status(400).send("Email is already registered.");
-      return;
-    }
+  // for (const userId in users) {
+  //   if (users[userId].email === email) {
+  //     res.status(400).send("Email is already registered.");
+  //     return;
+  //   }
+  // }
+
+  if (getUserByEmail(email)) {
+    res.status(400).send("Email is already registered.");
+    return;
   }
 
   const userId = generateRandomString();
