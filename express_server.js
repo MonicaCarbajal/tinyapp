@@ -62,6 +62,13 @@ app.get("/u/:id", (req, res) => {
   }
 });
 
+app.get("/urls_login", (req, res) => {
+  const templateVars = {
+    user: null // or set to a default value
+  };
+  res.render("urls_login", templateVars);
+});
+
 app.get("/", (req, res) => {
   res.send("Hello!");
 });
@@ -75,11 +82,11 @@ app.get("/urls.json", (req, res) => {
 });
 
 
-app.get("/register", (req, res) => {
+app.get("/urls_register", (req, res) => {
   const templateVars = {
-    user: null, // or set to a default value
+    user: null // or set to a default value
   };
-  res.render("register", templateVars);
+  res.render("urls_register", templateVars);
 });
 
 app.post("/register", (req, res) => {
@@ -90,14 +97,6 @@ app.post("/register", (req, res) => {
     res.status(400).send("Email and password are required. Try again!");
     return;
   }
-
-  // Check if the email is already registered
-  // for (const userId in users) {
-  //   if (users[userId].email === email) {
-  //     res.status(400).send("Email is already registered.");
-  //     return;
-  //   }
-  // }
 
   if (getUserByEmail(email)) {
     res.status(400).send("Email is already registered.");
@@ -145,6 +144,8 @@ app.post("/urls/:id", (req, res) => {
     res.status(404).send("Short URL not found");
   }
 });
+
+
 
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
