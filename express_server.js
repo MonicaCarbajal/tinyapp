@@ -43,7 +43,7 @@ app.get("/urls", (req, res) => {
   const user = users[req.cookies.user_id];
   const templateVars = {
     user: user,
-    urls: urlDatabase 
+    urls: urlDatabase
   };
   res.render("urls_index", templateVars);
 });
@@ -152,14 +152,18 @@ app.post("/login", (req, res) => {
 
   // Check if the user exists and the password matches
   const user = getUserByEmail(email);
-  if (user && user.password === password) {
+  if (!user) {
+    // User not found
+    res.status(403).send("User not found");
+  } else if (user.password !== password) {
+    // Password mismatch
+    res.status(403).send("Invalid password");
+  } else {
     // Set the user_id as a cookie
     res.cookie("user_id", user.id);
 
     // Redirect back to the /urls page
     res.redirect("/urls");
-  } else {
-    res.status(400).send("Invalid email or password");
   }
 });
 
@@ -167,8 +171,8 @@ app.post("/logout", (req, res) => {
   // Clear the user_id cookie
   res.clearCookie("user_id");
 
-  // Redirect back to the /urls page
-  res.redirect("/urls");
+  // Redirect to the login page
+  res.redirect("/urls_login");
 });
 
 function getUserByEmail(email) {
