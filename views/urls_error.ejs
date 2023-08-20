@@ -8,38 +8,27 @@
       integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
       crossorigin="anonymous"
     />
-    <title>URL - TinyApp Example</title>
+    <title>ERROR</title>
   </head>
 
-  <body>
 
     <%- include('partials/_header') %>
+  
 
-    <div class="card text-center">
-      <div class="card-header"></div>
-      <div class="card-body">
-        <h5 class="card-title">TinyURL for: <%= url.longURL %></h5>
-        <p class="card-text">
-          Short URL ID: <a href="/u/<%=id%>"><%=id%></a>
-           
-        </p>
-      </div>
-      <div class="card-footer text-muted"></div>
-    </div>
+<body>
 
-    <div class="card text-center card-body" style="text-align: center;">
-      <form action='/urls/<%=id%>' method="post">
-        <h3>Edit</h3>
-        <label for="longURL">New URL:</label>
-        <input type="text" name="longURL" id="longURL" value="<%= url.longURL %>" style="width: 500px;">
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
-    </div>
-    <br>
-    <div class="card-footer text-muted"></div>
-    
+  <h1>Oops!!</h1>
+  <div>
+    <% if (errorMessage) { %>
+      <p><%= errorMessage %></p>
+    <% } else { %>
+      <p>An error occurred.</p>
+    <% } %>
+    <p><a href="/urls_login">Log in</a> or <a href="/urls_register">Register</a> to manage URLs.</p>
+  </div>
+  
 
-    <!-- Bootstrap JS -->
+ <!-- Bootstrap JS -->
     <script
       src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
       integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -55,9 +44,8 @@
       integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
       crossorigin="anonymous"
     ></script>
-
-
-  </body>
+    
+</body>
 
 
 </html>
